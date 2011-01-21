@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.internal.runners.statements.InvokeMethod;
@@ -98,15 +99,15 @@ class DatabaseInvokeMethod extends InvokeMethod {
     }
 
     private void initTables(final Map<String, Map<String, String>> data) throws SQLException {
-        for (String table : data.keySet()) {
-            String sql = "CREATE TABLE " + table + " (";
-            for (String key : data.get(table).keySet()) {
-                sql += key + " ";
+        for (Entry<String, Map<String, String>> outerEntry : data.entrySet()) {
+            String sql = "CREATE TABLE " + outerEntry.getKey() + " (";
+            for (Entry<String, String> innerEntry : outerEntry.getValue().entrySet()) {
+                sql += innerEntry.getKey() + " ";
 
                 // TODO Make this a separate function and add more types.
-                if (data.get(table).get(key).equals("integer")) {
+                if (innerEntry.getValue().equals("integer")) {
                     sql += "INT";
-                } else if (data.get(table).get(key).equals("varchar")) {
+                } else if (innerEntry.getValue().equals("varchar")) {
                     sql += "VARCHAR(255)";
                 }
                 sql += ", ";
