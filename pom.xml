@@ -4,7 +4,7 @@
 	<groupId>com.xhochy.carameldb</groupId>
 	<artifactId>carameldb</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>carameldb</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
