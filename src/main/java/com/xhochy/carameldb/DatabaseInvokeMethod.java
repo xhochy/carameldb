@@ -115,7 +115,7 @@ class DatabaseInvokeMethod extends InvokeMethod {
                 sql.append(", ");
             }
             // remove last comma
-            sql.replace(sql.length() - 3, sql.length(), "").append(")");
+            sql.replace(sql.lastIndexOf(","), sql.length(), "").append(")");
             conn.prepareCall(sql.toString()).execute();
         }
     }
