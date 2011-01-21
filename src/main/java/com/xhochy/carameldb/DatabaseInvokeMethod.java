@@ -64,12 +64,12 @@ class DatabaseInvokeMethod extends InvokeMethod {
         }
 
         // Insert the data table by table, row by row.
-        for (String table : data.keySet()) {
-            for (Map<String, Object> entry : data.get(table)) {
+        for (Entry<String, List<Map<String, Object>>> outerEntry : data.entrySet()) {
+            for (Map<String, Object> entry : outerEntry.getValue()) {
                 // Step 1: Prepare the statement
                 String[] keys = entry.keySet().toArray(new String[0]);
                 StringBuffer sql = new StringBuffer("INSERT INTO ");
-                sql.append(table).append(" (");
+                sql.append(outerEntry.getKey()).append(" (");
                 StringBuffer sql2 = new StringBuffer(") VALUES (");
                 for (int i = 0; i < keys.length; i++) {
                     if (i != 0) {
