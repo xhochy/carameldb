@@ -68,20 +68,21 @@ class DatabaseInvokeMethod extends InvokeMethod {
             for (Map<String, Object> entry : data.get(table)) {
                 // Step 1: Prepare the statement
                 String[] keys = entry.keySet().toArray(new String[0]);
-                String sql = "INSERT INTO " + table + " (";
-                String sql2 = ") VALUES (";
+                StringBuffer sql = new StringBuffer("INSERT INTO ");
+                sql.append(table).append(" (");
+                StringBuffer sql2 = new StringBuffer(") VALUES (");
                 for (int i = 0; i < keys.length; i++) {
                     if (i != 0) {
-                        sql += ", ";
-                        sql2 += ", ";
+                        sql.append(", ");
+                        sql2.append(", ");
                     }
-                    sql2 += '?';
-                    sql += keys[i];
+                    sql2.append('?');
+                    sql.append(keys[i]);
                 }
-                sql += sql2 + ")";
+                sql.append(sql2).append(")");
 
                 // Step 2: Fill it with values.
-                PreparedStatement stmt = conn.prepareStatement(sql);
+                PreparedStatement stmt = conn.prepareStatement(sql.toString());
                 for (int i = 0; i < keys.length; i++) {
                     if (entry.get(keys[i]) instanceof Integer) {
                         stmt.setInt(i + 1, (Integer) entry.get(keys[i]));
@@ -100,22 +101,22 @@ class DatabaseInvokeMethod extends InvokeMethod {
 
     private void initTables(final Map<String, Map<String, String>> data) throws SQLException {
         for (Entry<String, Map<String, String>> outerEntry : data.entrySet()) {
-            String sql = "CREATE TABLE " + outerEntry.getKey() + " (";
+            StringBuffer sql = new StringBuffer("CREATE TABLE ");
+            sql.append(outerEntry.getKey()).append(" (");
             for (Entry<String, String> innerEntry : outerEntry.getValue().entrySet()) {
-                sql += innerEntry.getKey() + " ";
+                sql.append(innerEntry.getKey()).append(" ");
 
                 // TODO Make this a separate function and add more types.
                 if (innerEntry.getValue().equals("integer")) {
-                    sql += "INT";
+                    sql.append("INT");
                 } else if (innerEntry.getValue().equals("varchar")) {
-                    sql += "VARCHAR(255)";
+                    sql.append("VARCHAR(255)");
                 }
-                sql += ", ";
+                sql.append(", ");
             }
             // remove last comma
-            sql = sql.substring(0, sql.length() - 2);
-            sql += ")";
-            conn.prepareCall(sql).execute();
+            sql.replace(sql.length() - 3, sql.length(), "").append(")");
+            conn.prepareCall(sql.toString()).execute();
         }
     }
 
