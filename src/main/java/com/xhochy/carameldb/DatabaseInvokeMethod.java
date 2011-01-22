@@ -77,7 +77,7 @@ class DatabaseInvokeMethod extends InvokeMethod {
                         sql2.append(", ");
                     }
                     sql2.append('?');
-                    sql.append(keys[i]);
+                    sql.append("\"").append(keys[i]).append("\"");
                 }
                 sql.append(sql2).append(")");
 
