@@ -104,7 +104,7 @@ class DatabaseInvokeMethod extends InvokeMethod {
             StringBuffer sql = new StringBuffer("CREATE TABLE ");
             sql.append(outerEntry.getKey()).append(" (");
             for (Entry<String, String> innerEntry : outerEntry.getValue().entrySet()) {
-                sql.append(innerEntry.getKey()).append(" ");
+                sql.append("\"").append(innerEntry.getKey()).append("\" ");
 
                 // TODO Make this a separate function and add more types.
                 if (innerEntry.getValue().equals("integer")) {
