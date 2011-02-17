@@ -1,6 +1,5 @@
 package com.xhochy.carameldb;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -47,8 +46,7 @@ class DatabaseInvokeMethod extends InvokeMethod {
     @SuppressWarnings("unchecked")
     private void loadFixtures() throws FileNotFoundException, SQLException {
         // Load the fixtures file
-        String resource = getClass().getResource(databaseFixtures).getFile();
-        InputStream io = new FileInputStream(resource);
+        InputStream io = getClass().getResourceAsStream(databaseFixtures);
         Yaml yaml = new Yaml();
 
         // Parse the fixtures file
